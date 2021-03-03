@@ -3,6 +3,8 @@ import path from 'path'
 import matter from 'gray-matter'
 import remark from 'remark'
 import html from 'remark-html'
+import fetch from 'node-fetch'
+import { Base64 } from 'js-base64'
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
@@ -36,8 +38,23 @@ export function getSortedPostsData() {
   })
 }
 
-export function getAllPostIds() {
-  const fileNames = fs.readdirSync(postsDirectory)
+// export function getAllPostIds() {
+//   const fileNames = fs.readdirSync(postsDirectory)
+//   return fileNames.map(fileName => {
+//     return {
+//       params: {
+//         id: fileName.replace(/\.md$/, '')
+//       }
+//     }
+//   })
+// }
+export async function getAllPostIds() {
+// export const getAllPostIds = async () => {
+  const repositoryUrl = 'https://api.github.com/repos/shoutaTotsuka/p9rg8u/contents/posts'
+  const response = await fetch(repositoryUrl)
+  const files = await response.json()
+  const fileNames = files.map(file => file.name)
+
   return fileNames.map(fileName => {
     return {
       params: {
@@ -47,18 +64,31 @@ export function getAllPostIds() {
   })
 }
 
+// export async function getPostData(id) {
+//   const fullPath = path.join(postsDirectory, `${id}.md`)
+//   const fileContents = fs.readFileSync(fullPath, 'utf8')
+//   const matterResult = matter(fileContents)
+//   const processedContent = await remark().use(html).process(matterResult.content)
+//   const contentHtml = processedContent.toString()
+
+//   return {
+//     id,
+//     contentHtml,
+//     ...matterResult.data
+//   }
+// }
+
 export async function getPostData(id) {
-  const fullPath = path.join(postsDirectory, `${id}.md`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
+// export const getPostData = async id => {
+  const repositoryUrl = `https://api.github.com/repos/shoutaTotsuka/p9rg8u/contents/posts/${id}.md`
+  const response = await fetch(repositoryUrl)
+  const file = await response.json()
+  const fileContents = Base64.decode(file.content)
 
-  // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents)
-
-  // Use remark to convert markdown into HTML string
   const processedContent = await remark().use(html).process(matterResult.content)
   const contentHtml = processedContent.toString()
 
-  // Combine the data with the id and contentHtml
   return {
     id,
     contentHtml,
