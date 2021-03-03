@@ -20,6 +20,7 @@ export async function getStaticProps() {
 }
 
 export default function Home({ allPostsData }) {
+  console.log(process.env.TEST ?? 'test')
   return (
     <Layout home>
       <Head>
