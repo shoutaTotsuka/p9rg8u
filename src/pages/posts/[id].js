@@ -24,7 +24,7 @@ export default function Post({ postData }) {
 
 export async function getStaticPaths() {
   // SSGさせる対象ページ
-  const paths = getAllPostIds()
+  const paths = await getAllPostIds()
   return {
     paths,
     fallback: false
