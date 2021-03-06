@@ -14,7 +14,9 @@ class Doc extends Document {
     return (
       <Html lang='ja'>
         <Head>
-          <link rel='dns-prefetch' href='//www.google.co.jp' />
+          <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
+          <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='true' />
+          <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;900&display=swap' />
         </Head>
         <body>
           <Main />

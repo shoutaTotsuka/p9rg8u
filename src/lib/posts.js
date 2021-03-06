@@ -49,7 +49,6 @@ export function getSortedPostsData() {
 //   })
 // }
 export async function getAllPostIds() {
-// export const getAllPostIds = async () => {
   const repositoryUrl = 'https://api.github.com/repos/shoutaTotsuka/p9rg8u/contents/posts'
   const response = await fetch(repositoryUrl)
   const files = await response.json()
@@ -79,7 +78,6 @@ export async function getAllPostIds() {
 // }
 
 export async function getPostData(id) {
-// export const getPostData = async id => {
   const repositoryUrl = `https://api.github.com/repos/shoutaTotsuka/p9rg8u/contents/posts/${id}.md`
   const response = await fetch(repositoryUrl)
   const file = await response.json()
